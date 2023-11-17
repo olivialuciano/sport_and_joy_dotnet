@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace sport_and_joy_back_dotnet.Entities
 {
@@ -16,8 +17,9 @@ namespace sport_and_joy_back_dotnet.Entities
         [Required]
         public string Email { get; set; }
         public string Password { get; set; }
+        [JsonIgnore]
         public ICollection<Field>? Fields { get; set; }
-
+        [JsonIgnore]
         public ICollection<Reservation>? Reservations { get; set; }
 
     }

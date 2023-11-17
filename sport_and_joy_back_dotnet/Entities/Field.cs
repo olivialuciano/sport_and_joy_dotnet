@@ -17,5 +17,9 @@ namespace sport_and_joy_back_dotnet.Entities
         public bool LockerRoom { get; set; }
         public bool Bar { get; set; }
 
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+        public int UserId { get; set; }
+
     }
 }
