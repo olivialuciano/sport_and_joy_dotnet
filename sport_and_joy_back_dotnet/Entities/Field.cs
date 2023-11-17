@@ -10,12 +10,12 @@ namespace sport_and_joy_back_dotnet.Entities
         public int Id { get; set; }
         public string Name { get; set; } 
 
-        public string Location { get; set; }
+        public string? Location { get; set; }
         public string? Image { get; set; }
 
-        public string Description { get; set; }
-        public bool LockerRoom { get; set; }
-        public bool Bar { get; set; }
+        public string? Description { get; set; }
+        public bool? LockerRoom { get; set; }
+        public bool? Bar { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

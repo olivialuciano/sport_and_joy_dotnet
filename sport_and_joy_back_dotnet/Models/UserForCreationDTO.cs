@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace sport_and_joy_back_dotnet.Model
+namespace sport_and_joy_back_dotnet.Models
 {
-    public class UserDTO
+    public class UserForCreationDTO
     {
-        public int Id { get; set; }
+        [MaxLength(200)]
+        [Required]
         public string Image { get; set; } = "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png";
 
         public string FirstName { get; set; }
