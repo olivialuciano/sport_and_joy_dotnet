@@ -2,13 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\sport_and_joy_back_dotnet",
+    "\\sport_and_joy_back_dotnet\\Controllers",
     "\\sport_and_joy_back_dotnet\\Data",
     "\\sport_and_joy_back_dotnet\\Data\\Repository",
-    "\\sport_and_joy_back_dotnet\\Data\\Repository\\Implementations",
     "\\sport_and_joy_back_dotnet\\Data\\Repository\\Interfaces",
     "\\sport_and_joy_back_dotnet\\Entities",
-    "\\sport_and_joy_back_dotnet\\Models"
+    "\\sport_and_joy_back_dotnet\\Models",
+    "\\sport_and_joy_back_dotnet\\Profiles",
+    "\\sport_and_joy_back_dotnet\\Properties"
   ],
-  "SelectedNode": "\\sport_and_joy_back_dotnet\\Data\\Repository\\Implementations\\ReservationRepository.cs",
+  "SelectedNode": "\\sport_and_joy_back_dotnet\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
