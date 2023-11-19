@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\sport_and_joy_back_dotnet",
+    "\\sport_and_joy_back_dotnet\\Data",
+    "\\sport_and_joy_back_dotnet\\Data\\Repository",
+    "\\sport_and_joy_back_dotnet\\Data\\Repository\\Implementations",
+    "\\sport_and_joy_back_dotnet\\Data\\Repository\\Interfaces",
+    "\\sport_and_joy_back_dotnet\\Entities",
+    "\\sport_and_joy_back_dotnet\\Models"
   ],
+  "SelectedNode": "\\sport_and_joy_back_dotnet\\Data\\Repository\\Implementations\\ReservationRepository.cs",
   "PreviewInSolutionExplorer": false
 }

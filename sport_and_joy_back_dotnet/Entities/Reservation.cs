@@ -20,7 +20,7 @@ namespace sport_and_joy_back_dotnet.Entities
         public int UserId { get; set; }
 
         [ForeignKey("FieldId")]
-        public Field field { get; set; }
+        public Field Field { get; set; }
         public int FieldId { get; set; }
 
 

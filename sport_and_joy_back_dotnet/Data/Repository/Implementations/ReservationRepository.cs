@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Entities;
 using sport_and_joy_back_dotnet.Models;
@@ -19,48 +20,54 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
         public ReservationDTO GetResById(int resId)
         {
-            var reservation = _context.Groups
-                .Include(g => g.Contacts)
-                .FirstOrDefault(g => g.Id == resId);
+            var reservation = _context.Reservations
+                .Include(f => f.FieldId)
+                .FirstOrDefault(r => r.Id == resId);
 
             if (reservation == null)
             {
                 return null; 
             }
 
-            var groupDTO = new ReservationDTO
+            var reservationDTO = new ReservationDTO
             {
-                Id = group.Id,
-                Name = group.Name,
-                Contacts = group.Contacts.Select(contact => new ContactDTO
+                Id = reservation.Id,
+                Date = reservation.Date,
+                Field = new Field
                 {
-                    Id = contact.Id,
-                    Name = contact.Name,
-                    CelularNumber = contact.CelularNumber,
-                    Description = contact.Description,
-                    TelephoneNumber = contact.TelephoneNumber
-                }).ToList()
+                    Id = reservation.Field.Id,
+                    Location = reservation.Field.Location,
+                    Description = reservation.Field.Description,
+                    LockerRoom = reservation.Field.LockerRoom,
+                    Bar = reservation.Field.Bar,
+                    Sport = reservation.Field.Sport,
+                }
             };
 
-            return groupDTO;
+            return reservationDTO;
         }
 
-        public void CreateRes(Group group)
+
+        public void CreateRes(Reservation reservation)
         {
-            _context.Groups.Add(group);
+            _context.Reservations.Add(reservation);
             _context.SaveChanges();
         }
 
         public void DeleteRes(int id, int userId)
         {
-            _context.Groups.Remove(_context.Groups.Single(c => c.Id == id && c.UserId == userId));
+            _context.Reservations.Remove(_context.Reservations.Single(r => r.Id == id && r.UserId == userId));
             _context.SaveChanges();
         }
 
 
         public List<Reservation> GetAllResByUser(int userId)
         {
-            return _context.Groups.Where(g => g.UserId == userId).ToList();
+            return _context.Reservations.Where(r => r.UserId == userId).ToList();
+        }
+        public List<Reservation> GetAllRes(int userId)
+        {
+            return _context.Reservations.ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using sport_and_joy_back_dotnet.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace sport_and_joy_back_dotnet.Model
 {
@@ -12,5 +13,8 @@ namespace sport_and_joy_back_dotnet.Model
 
         public string Email { get; set; }
         public string Password { get; set; }
+
+        public Erole Role { get; set; }
+
     }
 }

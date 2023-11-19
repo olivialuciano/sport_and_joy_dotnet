@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Entities;
+using sport_and_joy_back_dotnet.Models;
 
 namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 {
@@ -14,52 +15,59 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             _context = context;
             _mapper = autoMapper;
         }
-        public void CreateFie(ContactForCreationDTO dto, int userId)
+        public void CreateFie(FieldForCreationDTO dto, int userId)
         {
-            Contact contactoACargar = new Contact()
+            Field field = new Field()
             {
                 UserId = userId,
-                CelularNumber = dto.CelularNumber,
+                Location = dto.Location,
                 Description = dto.Description,
-                Name = dto.Name,
-                TelephoneNumber = dto.TelephoneNumber,
+                LockerRoom = dto.LockerRoom,
+                Bar = dto.Bar,
+                Sport = dto.Sport,
             };
-            _context.Contacts.Add(contactoACargar);
+            _context.Fields.Add(field);
             _context.SaveChanges();
         }
 
         public void DeleteFie(int id, int userId)
         {
-            _context.Contacts.Remove(_context.Contacts.Single(c => c.Id == id && c.UserId == userId));
+            _context.Fields.Remove(_context.Fields.Single(f => f.Id == id && f.UserId == userId));
             _context.SaveChanges();
         }
 
         public List<Field> GetAllFieByUser(int userId)
         {
-            return _context.Contacts.Where(c => c.UserId == userId).ToList();
+            return _context.Fields.Where(f => f.UserId == userId).ToList();
         }
 
-        public Field GetFieById(int contactId)
+        public Field GetFieById(int id)
         {
-            return _context.Contacts.FirstOrDefault(c => c.Id == contactId);
+            return _context.Fields.FirstOrDefault(f => f.Id == id);
         }
 
-        public void UpdateFie(ContactForCreationDTO dto, int userId, int id)
+        public void UpdateFie(FieldForCreationDTO dto, int userId, int id)
         {
-            var contactoAModificar = _context.Contacts.FirstOrDefault(x => x.UserId == userId && x.Id == id);
+            var field = _context.Fields.FirstOrDefault(f => f.UserId == userId && f.Id == id);
 
-            if (contactoAModificar != null)
+            if (field != null)
             {
-                contactoAModificar.UserId = userId;
-                contactoAModificar.Id = id;
-                contactoAModificar.CelularNumber = dto.CelularNumber;
-                contactoAModificar.Description = dto.Description;
-                contactoAModificar.Name = dto.Name;
-                contactoAModificar.TelephoneNumber = dto.TelephoneNumber;
-                //contactoAModificar.Groups = dto.Groups;
+                field.UserId = userId;
+                field.Id = id;
+                field.Location = dto.Location;
+                field.Description = dto.Description;
+                field.LockerRoom = dto.LockerRoom;
+                field.Bar = dto.Bar;
+                field.Sport = dto.Sport;
 
                 _context.SaveChanges();
             }
         }
+
+        public List<Field> GetAllFie(int userId)
+        {
+            return _context.Fields.ToList();
+        }
+
     }
 }

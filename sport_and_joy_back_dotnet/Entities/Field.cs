@@ -16,6 +16,7 @@ namespace sport_and_joy_back_dotnet.Entities
         public string? Description { get; set; }
         public bool? LockerRoom { get; set; }
         public bool? Bar { get; set; }
+        public Esport Sport { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

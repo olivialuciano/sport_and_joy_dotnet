@@ -7,7 +7,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
     {
         public User ValidateUser(AuthenticationRequestBody authRequestBody);
         public User GetById(int userId);
-        public List<User> GetAll();
+        public List<User> GetAll(); //para el admin q ve todo
         User GetUser(int id);
         public void UpdateUserData(User user);
         List<User> GetListUser();

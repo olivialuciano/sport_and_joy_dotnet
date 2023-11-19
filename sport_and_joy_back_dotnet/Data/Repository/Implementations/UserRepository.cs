@@ -39,7 +39,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
             if (userItem != null)
             {
-                userItem.Name = user.FirstName;
+                userItem.FirstName = user.FirstName;
                 userItem.Email = user.Email;
                 userItem.LastName = user.LastName;
 

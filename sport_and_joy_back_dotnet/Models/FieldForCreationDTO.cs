@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using sport_and_joy_back_dotnet.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace sport_and_joy_back_dotnet.Models
 {
@@ -14,5 +15,7 @@ namespace sport_and_joy_back_dotnet.Models
         public string? Description { get; set; }
         public bool? LockerRoom { get; set; }
         public bool? Bar { get; set; }
+        public Esport Sport { get; set; }
+
     }
 }

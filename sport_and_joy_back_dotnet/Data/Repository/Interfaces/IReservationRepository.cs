@@ -8,7 +8,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
     {
         public void CreateRes(Reservation reservation);
         public ReservationDTO GetResById(int resId);
-        //public List<Group> GetAllRes(int userId); porque tiene que traer todos los de un user
+        public List<Reservation> GetAllRes(int userId); //para el admin q ve todo
         public List<Reservation> GetAllResByUser(int userId);
         public void DeleteRes(int id, int userId);
 
