@@ -92,3 +92,4 @@ C:\Users\PC\Desktop\sport_and_joy_dotnet\sport_and_joy_back_dotnet\obj\Debug\net
 C:\Users\PC\Desktop\sport_and_joy_dotnet\sport_and_joy_back_dotnet\obj\Debug\net6.0\sport_and_joy_back_dotnet.pdb
 C:\Users\PC\Desktop\sport_and_joy_dotnet\sport_and_joy_back_dotnet\obj\Debug\net6.0\sport_and_joy_back_dotnet.genruntimeconfig.cache
 C:\Users\PC\Desktop\sport_and_joy_dotnet\sport_and_joy_back_dotnet\obj\Debug\net6.0\ref\sport_and_joy_back_dotnet.dll
+C:\Users\PC\Desktop\sport_and_joy_dotnet\sport_and_joy_back_dotnet\bin\Debug\net6.0\DinkToPdf.dll
