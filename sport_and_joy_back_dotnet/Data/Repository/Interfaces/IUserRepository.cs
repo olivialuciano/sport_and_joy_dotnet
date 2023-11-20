@@ -23,5 +23,12 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
         //////// DELETE ////////
         void DeleteUser(User user);
+
+
+        /////// REPORTS //////
+        Task<List<User>> PlayersWithReservations();
+        Task<List<User>> OwnersWithFields();
+
+
     }
 }

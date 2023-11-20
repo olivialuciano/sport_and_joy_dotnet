@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Entities;
 using sport_and_joy_back_dotnet.Models;
@@ -77,6 +78,24 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         {
             _context.Users.Remove(user);
             _context.SaveChanges();
+        }
+
+
+
+        /////// REPORTS //////
+
+        public async Task<List<User>> PlayersWithReservations()
+        {
+            return await _context.Users
+                .Where(u => u.Role == Erole.PLAYER && u.Reservations.Any())
+                .ToListAsync();
+        }
+
+        public async Task<List<User>> OwnersWithFields()
+        {
+            return await _context.Users
+                .Where(u => u.Role == Erole.OWNER && u.Fields.Any())
+                .ToListAsync();
         }
 
 

@@ -24,5 +24,12 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
         //////// PUT ////////
         //No hay put porque no es así la lógica del negocio. no se edita una reserva. simplemente se elimina y se crea otra.
+
+
+        /////// REPORTS //////
+        Task<List<Reservation>> ReservationsInMonth(int month);
+
+
+
     }
 }

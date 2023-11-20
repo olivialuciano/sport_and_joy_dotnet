@@ -1,4 +1,6 @@
 using AutoMapper;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 //paraque no tire el error
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
+
+// Configuración para la inyección de dependencias de DinkToPdf -tema pdf
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

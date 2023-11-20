@@ -93,5 +93,14 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         //No hay put porque no es así la lógica del negocio. no se edita una reserva. simplemente se elimina y se crea otra.
 
 
+
+        /////// REPORTS //////
+        public async Task<List<Reservation>> ReservationsInMonth(int month)
+        {
+            return await _context.Reservations
+                .Where(r => r.Date.Month == month)
+                .ToListAsync();
+        }
+
     }
 }
