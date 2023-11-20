@@ -26,15 +26,18 @@ namespace sport_and_joy_back_dotnet.Controllers
             _config = config;
         }
 
-        [HttpGet]
-        [Authorize]
+
+        //////// GET ////////
+
+        [HttpGet] //trae todos los usuarios
+        [Authorize(Roles = "ADMIN")]
         public IActionResult GetAll()
         {
             return Ok(_userRepository.GetAll());
         }
 
-        [HttpGet("{Id}")]
-        [Authorize]
+        [HttpGet("{Id}")] //trae un usuario en especifico x id
+        [Authorize(Roles = "ADMIN")]
         public IActionResult GetOneById(int Id)
         {
             try
@@ -48,8 +51,127 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
 
-        [HttpPut("{id}/edit")] //para editar nombre, foto, apellido y email.
-        [Authorize]
+
+        //////// POST ////////
+
+        [HttpPost("authorization")] //es el login, el usuario inicia sesión.
+        public ActionResult<string> Autenticar(AuthenticationRequestBody authenticationRequestBody)
+        {
+            //Validamos las credenciales
+            var user = _userRepository.ValidateUser(authenticationRequestBody);
+
+            if (user is null)
+                return Unauthorized();
+
+            //Creación el token
+            var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
+
+            var credentials = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
+
+            //CLAIMS - data-valor ---- LA PARTE DEL PAYLOAD DEL JWT
+            var claimsForToken = new List<Claim>();
+            claimsForToken.Add(new Claim("sub", user.Id.ToString())); //esto lo usamos para traer las cosas que pertenecen a un user en particular.
+            claimsForToken.Add(new Claim("given_name", user.FirstName));
+            claimsForToken.Add(new Claim("family_name", user.LastName));
+            claimsForToken.Add(new Claim(ClaimTypes.Role, user.Role.ToString())); //agregamos el rol como claim para agarrarlo luegoen le front.
+
+            //ACÁ SE CREA EL TOKEN
+            var jwtSecurityToken = new JwtSecurityToken(
+              _config["Authentication:Issuer"],
+              _config["Authentication:Audience"],
+              claimsForToken,
+              DateTime.UtcNow,
+              DateTime.UtcNow.AddHours(1),
+              credentials);
+
+            var tokenToReturn = new JwtSecurityTokenHandler() //Pasamos el token a string
+                .WriteToken(jwtSecurityToken);
+
+            return Ok(tokenToReturn);
+        }
+
+        [HttpPost("registration")] //el usuario se crea una cuenta
+        public IActionResult PostUser(UserForCreationDTO dto)
+        {
+            try
+            {
+                var user = new User()
+                {
+                    Image = dto.Image,
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    Role = dto.Role,
+                };
+
+                var usersActivos = _userRepository.GetListUser();
+
+                foreach (var userActivo in usersActivos)
+                {
+                    if (user.Email == userActivo.Email)
+                    {
+                        return BadRequest("El email ingresado ya es utilizado en una cuenta activa");
+                    }
+                }
+
+                var userItem = _userRepository.AddUser(user);
+
+                var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
+
+                return Created("Created", userItemDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("registration-adduser-admin")]
+        [Authorize(Roles = "ADMIN")] //autorizacion solo a admin para que el admin cree ususarios
+        // está al pedo porque es igual que el otro? podemos simplemente usar el otro en el front en un componente para el admin?
+        public IActionResult PostUserAdmin(UserForCreationDTO dto)
+        {
+            try
+            {
+                var user = new User()
+                {
+                    Image = dto.Image,
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    Role = dto.Role,
+                };
+
+                var usersActivos = _userRepository.GetListUser();
+
+                foreach (var userActivo in usersActivos)
+                {
+                    if (user.Email == userActivo.Email)
+                    {
+                        return BadRequest("El email ingresado ya es utilizado en una cuenta activa");
+                    }
+                }
+
+                var userItem = _userRepository.AddUser(user);
+
+                var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
+
+                return Created("Created", userItemDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        //////// PUT ////////
+
+        [HttpPut("{id}/edit")]
+        [Authorize(Roles = "ADMIN,PLAYER,OWNER")] // modificar datos del usuario logeado.
         public IActionResult EditUserData(int id, UserForModificationDTO dto)
         {
             try
@@ -65,7 +187,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                 };
 
 
-                if (id != userSesionId)
+                if (id != userSesionId) 
                 {
                     return Unauthorized();
                 }
@@ -98,8 +220,51 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         }
 
+
+        [HttpPut("{id}/edit-admin")]
+        [Authorize(Roles = "ADMIN")] //PARA EL ADMIN. básicamente lo mismo pero no corrobora que el id sea igual al id del user logeado.
+        public IActionResult EditUserDataAdmin(int id, UserForModificationDTO dto)
+        {
+            try
+            {
+                var user = new User()
+                {
+                    Id = dto.Id,
+                    Image = dto.Image,
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    Email = dto.Email,
+                };
+
+                var userItem = _userRepository.GetUser(id);
+
+                if (userItem == null)
+                {
+                    return NotFound();
+                }
+
+                _userRepository.UpdateUserData(user);
+
+                var userModificado = _userRepository.GetUser(id);
+
+                var userModificadoDto = _mapper.Map<UserForCreationDTO>(userModificado);
+
+                return Ok(userModificadoDto);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        //////// DELETE ////////
+
+
         [HttpDelete("{id}/delete")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN,PLAYER,OWNER")] // eliminación del usuario logeado
         public IActionResult DeleteUser(int id)
         {
             try
@@ -113,7 +278,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                     return NotFound();
                 }
 
-                if (id != userSesionId)
+                if (id != userSesionId) //VER ACÁ TEMA ADMIN agregar que el rol sea diferente de admin o algo así
                 {
                     return Unauthorized();
                 }
@@ -130,77 +295,33 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         }
 
-        [HttpPost("authorization")]
-        public ActionResult<string> Autenticar(AuthenticationRequestBody authenticationRequestBody)
-        {
-            //Validamos las credenciales
-            //llamar a una función que valide los parámetros que enviamos.
-            var user = _userRepository.ValidateUser(authenticationRequestBody);
-
-            if (user is null)
-                return Unauthorized(); //st 401
-
-            //Creación el token
-            var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Authentication:SecretForKey"]));
-
-            var credentials = new SigningCredentials(securityPassword, SecurityAlgorithms.HmacSha256);
-
-            //CLAIMS - data-valor ---- LA PARTE DEL PAYLOAD DEL JWT
-            var claimsForToken = new List<Claim>();
-            claimsForToken.Add(new Claim("sub", user.Id.ToString())); //esto lo usamos para traer las cosas que pertenecen a un user en particular.
-            claimsForToken.Add(new Claim("given_name", user.FirstName));
-            claimsForToken.Add(new Claim("family_name", user.LastName));
-            //ACÁ SE CREA EL TOKEN
-            var jwtSecurityToken = new JwtSecurityToken(
-              _config["Authentication:Issuer"],
-              _config["Authentication:Audience"],
-              claimsForToken,
-              DateTime.UtcNow,
-              DateTime.UtcNow.AddHours(1),
-              credentials);
-
-            var tokenToReturn = new JwtSecurityTokenHandler() //Pasamos el token a string
-                .WriteToken(jwtSecurityToken);
-
-            return Ok(tokenToReturn);
-        }
-
-        [HttpPost("registration")]//("newuser")
-        public IActionResult PostUser(UserForCreationDTO dto)
+        [HttpDelete("{id}/delete-admin")]
+        [Authorize(Roles = "ADMIN")] // eliminación de usarios (admin)
+        public IActionResult DeleteUserAdmin(int id)
         {
             try
             {
-                var user = new User()
-                {
-                    Image = dto.Image,
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    Email = dto.Email,
-                    Password = dto.Password,
-                    Role = dto.Role,
-                };
 
-                var usersActivos = _userRepository.GetListUser();
+                var user = _userRepository.GetUser(id);
 
-                foreach (var userActivo in usersActivos)
+                if (user == null)
                 {
-                    if (user.Email == userActivo.Email)
-                    {
-                        return BadRequest("El email ingresado ya es utilizado en una cuenta activa");
-                    }
+                    return NotFound();
                 }
+              
+                _userRepository.DeleteUser(user);
 
-                var userItem = _userRepository.AddUser(user);
+                return NoContent();
 
-                var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
-
-                return Created("Created", userItemDto); ///*************
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
         }
+
+
 
 
     }

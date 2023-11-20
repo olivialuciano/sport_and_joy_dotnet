@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -6,6 +7,7 @@ using sport_and_joy_back_dotnet.Data;
 using sport_and_joy_back_dotnet.Data.Repository.Implementations;
 using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Profiles;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +58,31 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
             ValidAudience = builder.Configuration["Authentication:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
         };
+
+
+        /////////////////////////////////acá para agregar el rol de usuario para poder ver luego de agarrarlo del front /////////////
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = context =>
+            {
+                // Agregar el rol como claim adicional al principal del usuario
+                var identity = context.Principal.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    var roleClaim = context.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+                    if (roleClaim != null)
+                    {
+                        // Obtener el rol del token y agregarlo como claim adicional
+                        var role = roleClaim.Value;
+                        identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+        //////////////////////////////////////////////////
+
     }
 );
 

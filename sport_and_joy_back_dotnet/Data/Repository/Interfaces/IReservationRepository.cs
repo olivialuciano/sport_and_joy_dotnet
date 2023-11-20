@@ -6,13 +6,23 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 {
     public interface IReservationRepository
     {
-        public void CreateRes(Reservation reservation);
-        public ReservationDTO GetResById(int resId);
+        //////// GET ////////
+        public Reservation GetResById(int Id);
         public List<Reservation> GetAllRes(int userId); //para el admin q ve todo
         public List<Reservation> GetAllResByUser(int userId);
-        public void DeleteRes(int id, int userId);
 
-        //falta hacer un edit put.
-        // y lo de check availability para ver si ya esta alquilada la cancha.
+
+        //////// POST ////////
+        public void CreateRes(Reservation reservation);
+        public void CreateResAdmin(Reservation reservation);
+
+
+        //////// DELETE ////////
+        public void DeleteRes(int id, int userId);
+        public void DeleteResAdmin(int id);
+
+
+        //////// PUT ////////
+        //No hay put porque no es así la lógica del negocio. no se edita una reserva. simplemente se elimina y se crea otra.
     }
 }

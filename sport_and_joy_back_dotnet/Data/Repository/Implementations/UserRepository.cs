@@ -14,14 +14,12 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             _context = context;
             _mapper = mapper;
         }
+
+
+        //////// GET ////////
         public User? GetById(int userId)
         {
             return _context.Users.SingleOrDefault(u => u.Id == userId);
-        }
-
-        public User? ValidateUser(AuthenticationRequestBody authRequestBody)
-        {
-            return _context.Users.FirstOrDefault(p => p.Email == authRequestBody.Email && p.Password == authRequestBody.Password);
         }
 
         public List<User> GetAll()
@@ -33,6 +31,30 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         {
             return _context.Users.SingleOrDefault(u => u.Id == id);
         }
+
+        public List<User> GetListUser()
+        {
+            return _context.Users.ToList();
+        }
+
+
+        //////// POST ////////
+
+        public User? ValidateUser(AuthenticationRequestBody authRequestBody)
+        {
+            return _context.Users.FirstOrDefault(p => p.Email == authRequestBody.Email && p.Password == authRequestBody.Password);
+        }
+
+        public User AddUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+
+        //////// PUT ////////
+
         public void UpdateUserData(User user)
         {
             var userItem = _context.Users.FirstOrDefault(u => u.Id == user.Id);
@@ -46,16 +68,10 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
                 _context.SaveChanges();
             }
         }
-        public User AddUser(User user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user;
-        }
-        public List<User> GetListUser()
-        {
-            return _context.Users.ToList();
-        }
+
+
+
+        //////// DELETE ////////
 
         public void DeleteUser(User user)
         {

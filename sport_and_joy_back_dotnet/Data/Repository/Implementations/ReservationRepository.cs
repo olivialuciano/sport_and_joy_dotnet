@@ -18,56 +18,80 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             _mapper = autoMapper;
         }
 
-        public ReservationDTO GetResById(int resId)
+
+        //////// GET ////////
+        public List<Reservation> GetAllResByUser(int userId)
         {
-            var reservation = _context.Reservations
-                .Include(f => f.FieldId)
-                .FirstOrDefault(r => r.Id == resId);
+            return _context.Reservations.Where(r => r.UserId == userId).ToList();
+        }
 
-            if (reservation == null)
-            {
-                return null; 
-            }
+        public List<Reservation> GetAllRes(int userId)
+        {
+            return _context.Reservations.ToList();
+        }
 
-            var reservationDTO = new ReservationDTO
-            {
-                Id = reservation.Id,
-                Date = reservation.Date,
-                Field = new Field
-                {
-                    Id = reservation.Field.Id,
-                    Location = reservation.Field.Location,
-                    Description = reservation.Field.Description,
-                    LockerRoom = reservation.Field.LockerRoom,
-                    Bar = reservation.Field.Bar,
-                    Sport = reservation.Field.Sport,
-                }
-            };
-
-            return reservationDTO;
+        public Reservation GetResById(int id)
+        {
+            return _context.Reservations.FirstOrDefault(r => r.Id == id);
         }
 
 
+
+        //////// POST ////////
         public void CreateRes(Reservation reservation)
         {
-            _context.Reservations.Add(reservation);
-            _context.SaveChanges();
+            bool reservationExists = _context.Reservations // Verifica si ya existe una reserva para la misma cancha y fecha
+                .Any(r => r.Field == reservation.Field && r.Date == reservation.Date);
+
+            if (reservationExists)
+            {
+                throw new InvalidOperationException("Ya existe una reserva ese dia para esa cancha.");
+            }
+            else
+            {
+                _context.Reservations.Add(reservation);
+                _context.SaveChanges();
+            }
+
         }
 
+        public void CreateResAdmin(Reservation reservation)
+        {
+            bool reservationExists = _context.Reservations // Verifica si ya existe una reserva para la misma cancha y fecha
+                .Any(r => r.Field == reservation.Field && r.Date == reservation.Date);
+
+            if (reservationExists)
+            {
+                throw new InvalidOperationException("Ya existe una reserva ese dia para esa cancha.");
+            }
+            else
+            {
+                _context.Reservations.Add(reservation);
+                _context.SaveChanges();
+            }
+
+        }
+
+
+
+        //////// DELETE ////////
         public void DeleteRes(int id, int userId)
         {
             _context.Reservations.Remove(_context.Reservations.Single(r => r.Id == id && r.UserId == userId));
             _context.SaveChanges();
         }
 
+        public void DeleteResAdmin(int id)
+        {
+            _context.Reservations.Remove(_context.Reservations.Single(r => r.Id == id));
+            _context.SaveChanges();
+        }
 
-        public List<Reservation> GetAllResByUser(int userId)
-        {
-            return _context.Reservations.Where(r => r.UserId == userId).ToList();
-        }
-        public List<Reservation> GetAllRes(int userId)
-        {
-            return _context.Reservations.ToList();
-        }
+
+
+        //////// PUT ////////
+        //No hay put porque no es así la lógica del negocio. no se edita una reserva. simplemente se elimina y se crea otra.
+
+
     }
 }
