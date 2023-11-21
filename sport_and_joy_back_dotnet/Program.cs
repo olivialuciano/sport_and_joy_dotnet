@@ -1,4 +1,7 @@
-using AutoMapper;
+ï»¿using AutoMapper;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -6,9 +9,8 @@ using sport_and_joy_back_dotnet.Data;
 using sport_and_joy_back_dotnet.Data.Repository.Implementations;
 using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Profiles;
+using System.Security.Claims;
 using System.Text;
-
-// a ver subo este cambio espero que se haya solucionado
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 //paraque no tire el error
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
+
+// Configuraciï¿½n para la inyecciï¿½n de dependencias de DinkToPdf -tema pdf
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -26,7 +33,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Acá pegar el token generado al loguearse."
+        Description = "Acï¿½ pegar el token generado al loguearse."
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -37,7 +44,7 @@ builder.Services.AddSwaggerGen(setupAction =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "SportAndJoyBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definición
+                    Id = "SportAndJoyBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definicion
                 }, new List<string>() }
     });
 });
@@ -49,8 +56,8 @@ builder.Services.AddDbContext<SportContext>(options =>
 });
 
 
-builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token
-    .AddJwtBearer(options => //Acá definimos la configuración de la autenticación. le decimos qué cosas queremos comprobar. La fecha de expiración se valida por defecto.
+builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticacion que tenemos que elegir despues en PostMan para pasarle el token
+    .AddJwtBearer(options => //Aca definimos la configuracion de la autenticacion. le decimos que cosas queremos comprobar. La fecha de expiracion se valida por defecto.
     {
         options.TokenValidationParameters = new()
         {
@@ -61,6 +68,31 @@ builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntentica
             ValidAudience = builder.Configuration["Authentication:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
         };
+
+
+        /////////////////////////////////aca para agregar el rol de usuario para poder ver luego de agarrarlo del front /////////////
+        options.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = context =>
+            {
+                // Agregar el rol como claim adicional al principal del usuario
+                var identity = context.Principal.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    var roleClaim = context.Principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+                    if (roleClaim != null)
+                    {
+                        // Obtener el rol del token y agregarlo como claim adicional
+                        var role = roleClaim.Value;
+                        identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+        //////////////////////////////////////////////////
+
     }
 );
 
@@ -88,7 +120,7 @@ builder.Services.AddCors(options => options.AddPolicy(name: "SportAndJoy",
                .AllowAnyHeader();
     }));
 
-//esto después del cors!
+//esto despues del cors!
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
