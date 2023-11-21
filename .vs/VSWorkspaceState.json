@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\sport_and_joy_back_dotnet",
+    "\\sport_and_joy_back_dotnet\\Data",
+    "\\sport_and_joy_back_dotnet\\Entities",
+    "\\sport_and_joy_back_dotnet\\Migrations"
   ],
+  "SelectedNode": "\\sport_and_joy_back_dotnet\\Entities\\Reservation.cs",
   "PreviewInSolutionExplorer": false
 }

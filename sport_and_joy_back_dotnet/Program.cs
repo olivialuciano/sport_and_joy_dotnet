@@ -40,8 +40,11 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-builder.Services.AddDbContext<SportContext>(dbContextOptions => dbContextOptions.UseSqlite(
-    builder.Configuration["ConnectionStrings:SportAndJoyDBConnectionString"]));
+builder.Services.AddDbContext<SportContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SportAndJoyDBConnectionString"));
+
+});
 
 
 builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticación que tenemos que elegir después en PostMan para pasarle el token

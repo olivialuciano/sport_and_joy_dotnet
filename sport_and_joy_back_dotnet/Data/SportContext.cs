@@ -6,11 +6,13 @@ namespace sport_and_joy_back_dotnet.Data
 {
     public class SportContext : DbContext
     {
+
+        public SportContext(DbContextOptions<SportContext> options) : base(options) { }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Field> Fields { get; set; }
 
-        public SportContext(DbContextOptions<SportContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -99,17 +101,24 @@ namespace sport_and_joy_back_dotnet.Data
             };
 
 
-
-            // Relación uno a muchos: Usuario - Contacto
             modelBuilder.Entity<User>()
-                    .HasMany(x => x.Fields)
-                    .WithOne(x => x.User);
-            // Relación uno a muchos: Usuario - Grupo
-            modelBuilder.Entity<User>()
-              .HasMany(u => u.Reservations)
-              .WithOne(c => c.User);
+                .HasMany(u => u.Fields)
+                .WithOne(f => f.User)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-           
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Reservations)
+                .WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Field>()
+                .HasMany(f => f.Reservations)
+                .WithOne(r => r.Field)
+                .HasForeignKey(r => r.FieldId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
 
             modelBuilder.Entity<User>().HasData(usr1, usr2, usr3);
