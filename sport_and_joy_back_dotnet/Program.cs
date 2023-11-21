@@ -8,6 +8,8 @@ using sport_and_joy_back_dotnet.Data.Repository.Interfaces;
 using sport_and_joy_back_dotnet.Profiles;
 using System.Text;
 
+// a ver subo este cambio espero que se haya solucionado
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
