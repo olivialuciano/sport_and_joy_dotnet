@@ -54,6 +54,26 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
 
+        [HttpGet("allreservations-owner")] //Todas las reservas de las canchas del owner
+        [Authorize(Roles = "OWNER")]
+        public IActionResult GetAllResFieOwner()
+        {
+            try
+            {
+                int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+
+                var reservations = _reservationRepository.GetAllResOfFieldsOwner(userId);
+
+                return Ok(reservations);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
         //////// POST ////////
 

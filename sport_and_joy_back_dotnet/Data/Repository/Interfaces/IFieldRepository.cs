@@ -12,7 +12,9 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
 
         //////// POST ////////
-        public void CreateFie(FieldForCreationDTO dto, int userId);
+
+        // este post se comenta porque quedamos que un owner no puede crear una cancha.
+        //public void CreateFie(FieldForCreationDTO dto, int userId);
         public void CreateFieAdmin(FieldForCreationDTO dto, int IdUser);
 
 
@@ -22,7 +24,9 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
 
         //////// DELETE ////////
-        public void DeleteFie(int id, int userId);
+
+        // este delete se comenta porque quedamos que un owner no puede eliminar una cancha.
+        //public void DeleteFie(int id, int userId);
         public void DeleteFieAdmin(int id);
 
     }

@@ -10,6 +10,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
         public Reservation GetResById(int Id);
         public List<Reservation> GetAllRes(int userId); //para el admin q ve todo
         public List<Reservation> GetAllResByUser(int userId);
+        public List<Reservation> GetAllResOfFieldsOwner(int userId); //para owner
+
 
 
         //////// POST ////////

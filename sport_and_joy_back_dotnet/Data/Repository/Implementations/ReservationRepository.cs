@@ -35,6 +35,17 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             return _context.Reservations.FirstOrDefault(r => r.Id == id);
         }
 
+        public List<Reservation> GetAllResOfFieldsOwner(int userId) //para owner
+        {
+            var reservations = _context.Fields
+                .Where(field => field.UserId == userId) //canchas del usuario owner
+                .SelectMany(field => field.Reservations) //todas las reservas asociadas a esas canchas
+                .ToList();
+
+            return reservations;
+        }
+
+
 
 
         //////// POST ////////

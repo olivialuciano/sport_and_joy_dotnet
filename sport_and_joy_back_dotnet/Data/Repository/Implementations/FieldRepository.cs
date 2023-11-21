@@ -35,20 +35,23 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
 
         //////// POST ////////
-        public void CreateFie(FieldForCreationDTO dto, int userId)
-        {
-            Field field = new Field()
-            {
-                UserId = userId,
-                Location = dto.Location,
-                Description = dto.Description,
-                LockerRoom = dto.LockerRoom,
-                Bar = dto.Bar,
-                Sport = dto.Sport,
-            };
-            _context.Fields.Add(field);
-            _context.SaveChanges();
-        }
+
+        // este post se comenta porque quedamos que un owner no puede crear una cancha.
+
+        //public void CreateFie(FieldForCreationDTO dto, int userId)
+        //{
+        //    Field field = new Field()
+        //    {
+        //        UserId = userId,
+        //        Location = dto.Location,
+        //        Description = dto.Description,
+        //        LockerRoom = dto.LockerRoom,
+        //        Bar = dto.Bar,
+        //        Sport = dto.Sport,
+        //    };
+        //    _context.Fields.Add(field);
+        //    _context.SaveChanges();
+        //}
 
         public void CreateFieAdmin(FieldForCreationDTO dto, int IdUser)
         {
@@ -107,11 +110,14 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
 
         //////// DELETE ////////
-        public void DeleteFie(int id, int userId)
-        {
-            _context.Fields.Remove(_context.Fields.Single(f => f.Id == id && f.UserId == userId));
-            _context.SaveChanges();
-        }
+
+        // este delete se comenta porque quedamos que un owner no puede eliminar una cancha.
+
+        //public void DeleteFie(int id, int userId)
+        //{
+        //    _context.Fields.Remove(_context.Fields.Single(f => f.Id == id && f.UserId == userId));
+        //    _context.SaveChanges();
+        //}
 
         public void DeleteFieAdmin(int id)
         {

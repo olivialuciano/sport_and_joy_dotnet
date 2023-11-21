@@ -52,24 +52,26 @@ namespace sport_and_joy_back_dotnet.Controllers
 
 
         //////// POST ////////
+        
+        // este post se comenta porque quedamos que un owner no puede crear una cancha.
 
-        [HttpPost("create")] //crear nueva cancha asociada a un usuario
-        [Authorize(Roles = "OWNER")]
+        //[HttpPost("create")] //crear nueva cancha asociada a un usuario
+        //[Authorize(Roles = "OWNER")]
 
-        public IActionResult CreateField(FieldForCreationDTO dto)
-        {
-            try
-            {
-                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+        //public IActionResult CreateField(FieldForCreationDTO dto)
+        //{
+        //    try
+        //    {
+        //        var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
 
-                _fieldRepository.CreateFie(dto, userId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Created("Created", dto);
-        }
+        //        _fieldRepository.CreateFie(dto, userId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //    return Created("Created", dto);
+        //}
 
         [HttpPost("create-admin")] //crear nueva cancha con userId que le pasa el admin
         [Authorize(Roles = "ADMIN")]
@@ -127,23 +129,26 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         //////// DELETE ////////
 
-        [HttpDelete]
-        [Route("{Id}/delete")] //eliminar una cancha en específico de un usuario en particular
-        [Authorize(Roles = "OWNER")]
+        // este delete se comenta porque quedamos que un owner no puede eliminar una cancha.
 
-        public IActionResult DeleteFieldById(int id)
-        {
-            try
-            {
-                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-                _fieldRepository.DeleteFie(id, userId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-            return Ok();
-        }
+
+        //[HttpDelete]
+        //[Route("{Id}/delete")] //eliminar una cancha en específico de un usuario en particular
+        //[Authorize(Roles = "OWNER")]
+
+        //public IActionResult DeleteFieldById(int id)
+        //{
+        //    try
+        //    {
+        //        var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+        //        _fieldRepository.DeleteFie(id, userId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex);
+        //    }
+        //    return Ok();
+        //}
 
         [HttpDelete]
         [Route("{Id}/delete-admin")] //eliminar una cancha en específico.
