@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\sport_and_joy_back_dotnet.props" />
-</Project>
