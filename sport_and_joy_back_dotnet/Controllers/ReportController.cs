@@ -24,55 +24,76 @@ namespace sport_and_joy_back_dotnet.Controllers
         [HttpGet("players-with-reservations")]
         public async Task<IActionResult> PlayersWithReservationsReport()
         {
-            var users = await _userRepository.PlayersWithReservations();
-            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/PlayersWithReservations.html");
-            var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+            try
             {
-                GlobalSettings = {
-            },
-                Objects = {
-                new ObjectSettings() {
-                    HtmlContent = htmlContent,
-                }
+                var users = await _userRepository.PlayersWithReservations();
+                var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/PlayersWithReservations.html");
+                var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+                {
+                    GlobalSettings = {},
+                    Objects = {
+                        new ObjectSettings() {
+                            HtmlContent = htmlContent,
+                        }
+                    }
+                });
+                return File(pdfBytes, "application/pdf", "players-with-reservations-report.pdf");
             }
-            });
-            return File(pdfBytes, "application/pdf", "players-with-reservations-report.pdf");
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet("owners-with-fields")]
         public async Task<IActionResult> OwnersWithFieldsReport()
         {
-            var users = await _userRepository.OwnersWithFields();
-            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/OwnersWithFields.html");
-            var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+            try
             {
-                GlobalSettings = {
-            },
-                Objects = {
-                new ObjectSettings() {
-                    HtmlContent = htmlContent,
-                }
+                var users = await _userRepository.OwnersWithFields();
+                var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/OwnersWithFields.html");
+                var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+                {
+                    GlobalSettings = {},
+                    Objects = {
+                        new ObjectSettings() {
+                            HtmlContent = htmlContent,
+                        }
+                    }
+                });
+                return File(pdfBytes, "application/pdf", "owners-with-fields-report.pdf");
             }
-            });
-            return File(pdfBytes, "application/pdf", "owners-with-fields-report.pdf");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet("reservations-in-month/{month}")]
         public async Task<IActionResult> ReservationsInMonthReport(int month)
         {
-            var reservations = await _reservationRepository.ReservationsInMonth(month);
-            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/ReservationsInMonth.html");
-            var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+            try
             {
-                GlobalSettings = {
-            },
-                Objects = {
-                new ObjectSettings() {
-                    HtmlContent = htmlContent,
-                }
+                var reservations = await _reservationRepository.ReservationsInMonth(month);
+                var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/ReservationsInMonth.html");
+                var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
+                {
+                    GlobalSettings = {},
+                    Objects = {
+                        new ObjectSettings() {
+                            HtmlContent = htmlContent,
+                        }
+                    }
+                });
+                return File(pdfBytes, "application/pdf", $"reservations-in-month-{month}.pdf");
             }
-            });
-            return File(pdfBytes, "application/pdf", $"reservations-in-month-{month}.pdf");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 }

@@ -29,8 +29,16 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult GetAllByUser()
         {
-            int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value); //es un enum que tiene todos los tipos de claim
-            return Ok(_reservationRepository.GetAllResByUser(userId));
+            try
+            {
+                int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value); //es un enum que tiene todos los tipos de claim
+                return Ok(_reservationRepository.GetAllResByUser(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
 
@@ -39,9 +47,17 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult GetAll(int Id)
         {
-            var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-            var reservations = _reservationRepository.GetAllRes(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
-            return Ok(reservations);
+            try
+            {
+                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                var reservations = _reservationRepository.GetAllRes(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
+                return Ok(reservations);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
 
@@ -49,8 +65,17 @@ namespace sport_and_joy_back_dotnet.Controllers
         [Authorize(Roles = "ADMIN,PLAYER,OWNER")]
         public IActionResult GetOne(int Id)
         {
-            var reservation = _reservationRepository.GetResById(Id);
-            return Ok(reservation);
+            try
+            {
+                var reservation = _reservationRepository.GetResById(Id);
+                return Ok(reservation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+
         }
 
 
@@ -61,9 +86,7 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-
                 var reservations = _reservationRepository.GetAllResOfFieldsOwner(userId);
-
                 return Ok(reservations);
             }
             catch (Exception ex)
@@ -82,23 +105,27 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult CreateReservation([FromBody] ReservationForCreationDTO dto)
         {
-            if (dto == null)
+            try
             {
-                return BadRequest();
+                if (dto == null)
+                {
+                    return BadRequest();
+                }
+                int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                var reservation = new Reservation
+                {
+                    Date = dto.Date,
+                    UserId = userId,
+                    FieldId = dto.FieldId,
+                };
+                _reservationRepository.CreateRes(reservation);
+                return Ok();
             }
-            int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-
-            var reservation = new Reservation
+            catch(Exception ex)
             {
-                Date = dto.Date,
-                UserId = userId,
-                FieldId = dto.FieldId,
+                return BadRequest(ex.Message);
+            }
 
-            };
-
-            _reservationRepository.CreateRes(reservation);
-
-            return Ok();
         }
 
 
@@ -107,22 +134,26 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult CreateReservationAdmin([FromBody] ReservationForCreationDTO dto, int IdUser)
         {
-            if (dto == null)
+            try
             {
-                return BadRequest();
+                if (dto == null)
+                {
+                    return BadRequest();
+                }
+                var reservation = new Reservation
+                {
+                    Date = dto.Date,
+                    UserId = IdUser, //id proporcionado x el admin
+                    FieldId = dto.FieldId,
+                };
+                _reservationRepository.CreateResAdmin(reservation);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);  
             }
 
-            var reservation = new Reservation
-            {
-                Date = dto.Date,
-                UserId = IdUser, //id proporcionado x el admin
-                FieldId = dto.FieldId,
-
-            };
-
-            _reservationRepository.CreateResAdmin(reservation);
-
-            return Ok();
         }
 
 
@@ -137,14 +168,13 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-
                 _reservationRepository.DeleteRes(id, userId);
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Ok();
         }
 
 
@@ -156,12 +186,12 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 _reservationRepository.DeleteResAdmin(id);
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Ok();
         }
 
 

@@ -25,8 +25,16 @@ namespace sport_and_joy_back_dotnet.Controllers
         [Authorize(Roles = "OWNER")]
         public IActionResult GetAllByUser()
         {
-            int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-            return Ok(_fieldRepository.GetAllFieByUser(userId));
+            try
+            {
+                int userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                return Ok(_fieldRepository.GetAllFieByUser(userId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpGet("getall")] //todas las canchas de la bdd
@@ -34,9 +42,17 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult GetAll(int Id)
         {
-            var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-            var fields = _fieldRepository.GetAllFie(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
-            return Ok(fields);
+            try
+            {
+                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                var fields = _fieldRepository.GetAllFie(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
+                return Ok(fields);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpGet("{Id}")] //una cancha en específico x id
@@ -44,9 +60,17 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         public IActionResult GetOne(int Id)
         {
-            var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-            var fields = _fieldRepository.GetFieById(Id);
-            return Ok(fields);
+            try
+            {
+                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+                var fields = _fieldRepository.GetFieById(Id);
+                return Ok(fields);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
 
@@ -81,12 +105,12 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 _fieldRepository.CreateFieAdmin(dto, IdUser);
+                return Created("Created", dto);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            return Created("Created", dto);
         }
 
 
@@ -100,14 +124,13 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-
                 _fieldRepository.UpdateFie(dto, userId, id);
+                return NoContent();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return NoContent();
         }
 
         [HttpPut("{id}/edit-admin")] //editar una cancha en específico por id de un usuario que el admin pasa.
@@ -118,12 +141,12 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 _fieldRepository.UpdateFieAdmin(dto, IdUser, id);
+                return NoContent();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return NoContent();
         }
 
 
@@ -159,12 +182,12 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 _fieldRepository.DeleteFieAdmin(id);
+                return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Ok();
         }
 
     }

@@ -33,7 +33,15 @@ namespace sport_and_joy_back_dotnet.Controllers
         [Authorize(Roles = "ADMIN")]
         public IActionResult GetAll()
         {
-            return Ok(_userRepository.GetAll());
+            try
+            {
+                return Ok(_userRepository.GetAll());
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet("{Id}")] //trae un usuario en especifico x id
@@ -104,9 +112,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                     Password = dto.Password,
                     Role = dto.Role,
                 };
-
                 var usersActivos = _userRepository.GetListUser();
-
                 foreach (var userActivo in usersActivos)
                 {
                     if (user.Email == userActivo.Email)
@@ -114,11 +120,8 @@ namespace sport_and_joy_back_dotnet.Controllers
                         return BadRequest("El email ingresado ya es utilizado en una cuenta activa");
                     }
                 }
-
                 var userItem = _userRepository.AddUser(user);
-
                 var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
-
                 return Created("Created", userItemDto);
             }
             catch (Exception ex)
@@ -143,9 +146,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                     Password = dto.Password,
                     Role = dto.Role,
                 };
-
                 var usersActivos = _userRepository.GetListUser();
-
                 foreach (var userActivo in usersActivos)
                 {
                     if (user.Email == userActivo.Email)
@@ -153,11 +154,8 @@ namespace sport_and_joy_back_dotnet.Controllers
                         return BadRequest("El email ingresado ya es utilizado en una cuenta activa");
                     }
                 }
-
                 var userItem = _userRepository.AddUser(user);
-
                 var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
-
                 return Created("Created", userItemDto);
             }
             catch (Exception ex)
@@ -185,33 +183,23 @@ namespace sport_and_joy_back_dotnet.Controllers
                     LastName = dto.LastName,
                     Email = dto.Email,
                 };
-
-
                 if (id != userSesionId)
                 {
                     return Unauthorized();
                 }
-
                 if (id != user.Id)
                 {
                     return Unauthorized();
                 }
-
                 var userItem = _userRepository.GetUser(id);
-
                 if (userItem == null)
                 {
                     return NotFound();
                 }
-
                 _userRepository.UpdateUserData(user);
-
                 var userModificado = _userRepository.GetUser(id);
-
                 var userModificadoDto = _mapper.Map<UserForCreationDTO>(userModificado);
-
                 return Ok(userModificadoDto);
-
             }
             catch (Exception ex)
             {
@@ -235,22 +223,15 @@ namespace sport_and_joy_back_dotnet.Controllers
                     LastName = dto.LastName,
                     Email = dto.Email,
                 };
-
                 var userItem = _userRepository.GetUser(id);
-
                 if (userItem == null)
                 {
                     return NotFound();
                 }
-
                 _userRepository.UpdateUserData(user);
-
                 var userModificado = _userRepository.GetUser(id);
-
                 var userModificadoDto = _mapper.Map<UserForCreationDTO>(userModificado);
-
                 return Ok(userModificadoDto);
-
             }
             catch (Exception ex)
             {
@@ -270,23 +251,17 @@ namespace sport_and_joy_back_dotnet.Controllers
             try
             {
                 int userSesionId = Int32.Parse(HttpContext.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-
                 var user = _userRepository.GetUser(id);
-
                 if (user == null)
                 {
                     return NotFound();
                 }
-
                 if (id != userSesionId) //VER ACÁ TEMA ADMIN agregar que el rol sea diferente de admin o algo así
                 {
                     return Unauthorized();
                 }
-
                 _userRepository.DeleteUser(user);
-
                 return NoContent();
-
             }
             catch (Exception ex)
             {
@@ -301,24 +276,18 @@ namespace sport_and_joy_back_dotnet.Controllers
         {
             try
             {
-
                 var user = _userRepository.GetUser(id);
-
                 if (user == null)
                 {
                     return NotFound();
                 }
-
                 _userRepository.DeleteUser(user);
-
                 return NoContent();
-
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
 
