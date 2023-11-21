@@ -25,7 +25,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         public async Task<IActionResult> PlayersWithReservationsReport()
         {
             var users = await _userRepository.PlayersWithReservations();
-            var htmlContent = await System.IO.File.ReadAllTextAsync("");
+            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/PlayersWithReservations.html");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {
@@ -43,7 +43,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         public async Task<IActionResult> OwnersWithFieldsReport()
         {
             var users = await _userRepository.OwnersWithFields();
-            var htmlContent = await System.IO.File.ReadAllTextAsync("");
+            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/OwnersWithFields.html");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {
@@ -61,7 +61,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         public async Task<IActionResult> ReservationsInMonthReport(int month)
         {
             var reservations = await _reservationRepository.ReservationsInMonth(month);
-            var htmlContent = await System.IO.File.ReadAllTextAsync("");
+            var htmlContent = await System.IO.File.ReadAllTextAsync("ReportsHtml/ReservationsInMonth.html");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {
