@@ -33,7 +33,7 @@ namespace sport_and_joy_back_dotnet.Data
                 Password = "India123",
                 Email = "visvaik@gmail.com",
                 Role = Erole.OWNER
-                
+
             };
             User usr3 = new User()
             {
@@ -132,3 +132,4 @@ namespace sport_and_joy_back_dotnet.Data
 
     }
 }
+

@@ -22,7 +22,7 @@ namespace sport_and_joy_back_dotnet.Entities
         public User User { get; set; }
         public int UserId { get; set; }
 
-        public ICollection<Reservation>? Reservations { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
 
 
     }

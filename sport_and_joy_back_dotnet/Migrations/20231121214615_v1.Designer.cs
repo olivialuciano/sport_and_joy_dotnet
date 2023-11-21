@@ -12,8 +12,8 @@ using sport_and_joy_back_dotnet.Data;
 namespace sport_and_joy_back_dotnet.Migrations
 {
     [DbContext(typeof(SportContext))]
-    [Migration("20231121170341_v5")]
-    partial class v5
+    [Migration("20231121214615_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

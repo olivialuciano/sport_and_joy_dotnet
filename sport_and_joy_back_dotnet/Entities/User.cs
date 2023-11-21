@@ -19,8 +19,8 @@ namespace sport_and_joy_back_dotnet.Entities
         public Erole Role { get; set; }
 
 
-        public ICollection<Field>? Fields { get; set; }
-        public ICollection<Reservation>? Reservations { get; set; }
+        public List<Field> Fields { get; set; }
+        public List<Reservation> Reservations { get; set; }
 
     }
 }
