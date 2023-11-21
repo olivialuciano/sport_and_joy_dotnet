@@ -20,11 +20,12 @@ namespace sport_and_joy_back_dotnet.Controllers
             _pdfConverter = pdfConverter;
         }
 
+
         [HttpGet("players-with-reservations")]
         public async Task<IActionResult> PlayersWithReservationsReport()
         {
             var users = await _userRepository.PlayersWithReservations();
-            var htmlContent = "Your HTML content here"; // Reemplazar con el contenido HTML real
+            var htmlContent = await System.IO.File.ReadAllTextAsync("");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {
@@ -42,7 +43,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         public async Task<IActionResult> OwnersWithFieldsReport()
         {
             var users = await _userRepository.OwnersWithFields();
-            var htmlContent = "Your HTML content here"; // Reemplazar con el contenido HTML real
+            var htmlContent = await System.IO.File.ReadAllTextAsync("");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {
@@ -60,7 +61,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         public async Task<IActionResult> ReservationsInMonthReport(int month)
         {
             var reservations = await _reservationRepository.ReservationsInMonth(month);
-            var htmlContent = "Your HTML content here"; // Reemplazar con el contenido HTML real
+            var htmlContent = await System.IO.File.ReadAllTextAsync("");
             var pdfBytes = _pdfConverter.Convert(new HtmlToPdfDocument()
             {
                 GlobalSettings = {

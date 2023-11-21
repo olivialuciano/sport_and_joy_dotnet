@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Usuarios con Canchas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trabajo Práctico Integrador - Proyecto de Laboratorio</h1>
+    <h2>Sport&Joy</h2>
+    <h3>Integrantes del Grupo:</h3>
+    <ul>
+        <li>Lucila Ansaldi</li>
+        <li>Sebastián Comparada</li>
+        <li>Olivia Luciano</li>
+        <li>Victoria Svaikauskas</li>
+    </ul>
+
+    <h2>Informe de Usarios con Canchas</h2>
+    <p>Listado de todos los usuarios de rol "owner" que que tienen al menos una cancha.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Cantidad de canchas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.FirstName @if (!string.IsNullOrEmpty(user.LastName)) { @user.LastName }</td>
+                <td>@user.Email</td>
+                <td>@user.Fields.Count</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
