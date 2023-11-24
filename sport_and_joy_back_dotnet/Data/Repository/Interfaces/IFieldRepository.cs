@@ -7,7 +7,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
     {
         //////// GET ////////
         public Field GetFieById(int id);
-        public List<Field> GetAllFie(int userId); //para el admin q ve todo
+        public List<Field> GetAllFie(); //para el admin q ve todo
         public List<Field> GetAllFieByUser(int userId);
 
 

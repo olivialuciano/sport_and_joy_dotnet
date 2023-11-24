@@ -17,7 +17,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         }
 
         //////// GET ////////
-        public List<Field> GetAllFie(int userId)
+        public List<Field> GetAllFie()
         {
             return _context.Fields.ToList();
         }

@@ -25,7 +25,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             return _context.Reservations.Where(r => r.UserId == userId).ToList();
         }
 
-        public List<Reservation> GetAllRes(int userId)
+        public List<Reservation> GetAllRes()
         {
             return _context.Reservations.ToList();
         }

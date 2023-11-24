@@ -45,12 +45,11 @@ namespace sport_and_joy_back_dotnet.Controllers
         [HttpGet("getall")] //todas las reservas de la bdd solo admin
         [Authorize(Roles = "ADMIN")]
 
-        public IActionResult GetAll(int Id)
+        public IActionResult GetAll()
         {
             try
             {
-                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-                var reservations = _reservationRepository.GetAllRes(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
+                var reservations = _reservationRepository.GetAllRes().ToList();
                 return Ok(reservations);
             }
             catch(Exception ex)

@@ -21,7 +21,7 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         //////// GET ////////
 
-        [HttpGet("myfields")] //las canchas de un usuario owner
+        [HttpGet("get/myfields")] //las canchas de un usuario owner
         [Authorize(Roles = "OWNER")]
         public IActionResult GetAllByUser()
         {
@@ -38,14 +38,13 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
         [HttpGet("getall")] //todas las canchas de la bdd
-        [Authorize(Roles = "ADMIN,PLAYER")]
+        [Authorize(Roles = "ADMIN,PLAYER")] //perfecto, el al owner no le trae.
 
-        public IActionResult GetAll(int Id)
+        public IActionResult GetAll()
         {
             try
             {
-                var userId = Int32.Parse(HttpContext.User.Claims.First(e => e.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
-                var fields = _fieldRepository.GetAllFie(userId).Where(x => x.Id == Id && x.UserId == userId).ToList();
+                var fields = _fieldRepository.GetAllFie().ToList();
                 return Ok(fields);
             }
             catch(Exception ex)
