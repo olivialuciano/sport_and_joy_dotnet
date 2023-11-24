@@ -62,9 +62,11 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
             if (userItem != null)
             {
+                userItem.Image = user.Image;
                 userItem.FirstName = user.FirstName;
                 userItem.Email = user.Email;
                 userItem.LastName = user.LastName;
+                userItem.Role = user.Role;
 
                 _context.SaveChanges();
             }

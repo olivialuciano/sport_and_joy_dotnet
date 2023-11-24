@@ -9,7 +9,7 @@ namespace sport_and_joy_back_dotnet.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Image { get; set; } = "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png";
+        public string? Image { get; set; }
         public string FirstName { get; set; }
         public string? LastName { get; set; }
         [Required]

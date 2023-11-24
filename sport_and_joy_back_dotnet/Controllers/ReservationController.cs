@@ -179,7 +179,7 @@ namespace sport_and_joy_back_dotnet.Controllers
 
 
         [HttpDelete("{Id}/delete-admin")] //eliminar una reserva en específico admin proporciona id de usuario.
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]// no funciona
 
         public IActionResult DeleteReservationByIdAdmin(int id)
         {

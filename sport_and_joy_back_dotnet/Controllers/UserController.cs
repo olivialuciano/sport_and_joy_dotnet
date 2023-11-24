@@ -29,7 +29,7 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         //////// GET ////////
 
-        [HttpGet] //trae todos los usuarios
+        [HttpGet("getall")] //trae todos los usuarios
         [Authorize(Roles = "ADMIN")]
         public IActionResult GetAll()
         {
@@ -44,7 +44,7 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         }
 
-        [HttpGet("{Id}")] //trae un usuario en especifico x id
+        [HttpGet("get/{Id}")] //trae un usuario en especifico x id
         [Authorize(Roles = "ADMIN")]
         public IActionResult GetOneById(int Id)
         {
@@ -121,8 +121,8 @@ namespace sport_and_joy_back_dotnet.Controllers
                     }
                 }
                 var userItem = _userRepository.AddUser(user);
-                var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
-                return Created("Created", userItemDto);
+                var userItemDtoRta = _mapper.Map<UserForModificationDTO>(userItem);
+                return Created("Created", userItemDtoRta);
             }
             catch (Exception ex)
             {
@@ -130,7 +130,7 @@ namespace sport_and_joy_back_dotnet.Controllers
             }
         }
 
-        [HttpPost("registration-adduser-admin")]
+        [HttpPost("registration-adduser-admin")] 
         [Authorize(Roles = "ADMIN")] //autorizacion solo a admin para que el admin cree ususarios
         // está al pedo porque es igual que el otro? podemos simplemente usar el otro en el front en un componente para el admin?
         public IActionResult PostUserAdmin(UserForCreationDTO dto)
@@ -155,8 +155,8 @@ namespace sport_and_joy_back_dotnet.Controllers
                     }
                 }
                 var userItem = _userRepository.AddUser(user);
-                var userItemDto = _mapper.Map<UserForCreationDTO>(userItem);
-                return Created("Created", userItemDto);
+                var userItemDtoRta = _mapper.Map<UserForModificationDTO>(userItem);
+                return Created("Created", userItemDtoRta);
             }
             catch (Exception ex)
             {
@@ -168,38 +168,39 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         //////// PUT ////////
 
-        [HttpPut("{id}/edit")]
+        [HttpPut("{idUserLoggedIn}/edit")] //PERFECTO
         [Authorize(Roles = "ADMIN,PLAYER,OWNER")] // modificar datos del usuario logeado.
-        public IActionResult EditUserData(int id, UserForModificationDTO dto)
+        public IActionResult EditUserData(int idUserLoggedIn, UserForModificationDTO dto)
         {
             try
             {
                 int userSesionId = Int32.Parse(HttpContext.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
                 var user = new User()
                 {
-                    Id = dto.Id,
+                    Id = idUserLoggedIn,
                     Image = dto.Image,
                     FirstName = dto.FirstName,
                     LastName = dto.LastName,
                     Email = dto.Email,
                 };
-                if (id != userSesionId)
+                if (idUserLoggedIn != userSesionId)
                 {
                     return Unauthorized();
                 }
-                if (id != user.Id)
+                if (idUserLoggedIn != user.Id)
                 {
                     return Unauthorized();
                 }
-                var userItem = _userRepository.GetUser(id);
+                var userItem = _userRepository.GetUser(idUserLoggedIn);
                 if (userItem == null)
                 {
                     return NotFound();
                 }
                 _userRepository.UpdateUserData(user);
-                var userModificado = _userRepository.GetUser(id);
-                var userModificadoDto = _mapper.Map<UserForCreationDTO>(userModificado);
-                return Ok(userModificadoDto);
+                var userModificado = _userRepository.GetUser(idUserLoggedIn);
+                var userModificadoDtoRta = _mapper.Map<UserForModificationDTO>(userModificado);
+                return Ok(userModificadoDtoRta);
+
             }
             catch (Exception ex)
             {
@@ -209,29 +210,30 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
 
-        [HttpPut("{id}/edit-admin")]
+        [HttpPut("{idUserToModify}/edit-admin")] //PERFECTO
         [Authorize(Roles = "ADMIN")] //PARA EL ADMIN. básicamente lo mismo pero no corrobora que el id sea igual al id del user logeado.
-        public IActionResult EditUserDataAdmin(int id, UserForModificationDTO dto)
+        public IActionResult EditUserDataAdmin(int idUserToModify, UserForModificationDTO dto)
         {
             try
             {
                 var user = new User()
                 {
-                    Id = dto.Id,
+                    Id = idUserToModify,
                     Image = dto.Image,
                     FirstName = dto.FirstName,
                     LastName = dto.LastName,
                     Email = dto.Email,
+                    Role = dto.Role,
                 };
-                var userItem = _userRepository.GetUser(id);
+                var userItem = _userRepository.GetUser(idUserToModify);
                 if (userItem == null)
                 {
                     return NotFound();
                 }
                 _userRepository.UpdateUserData(user);
-                var userModificado = _userRepository.GetUser(id);
-                var userModificadoDto = _mapper.Map<UserForCreationDTO>(userModificado);
-                return Ok(userModificadoDto);
+                var userModificado = _userRepository.GetUser(idUserToModify);
+                var userModificadoDtoRta = _mapper.Map<UserForModificationDTO>(userModificado);
+                return Ok(userModificadoDtoRta);
             }
             catch (Exception ex)
             {
