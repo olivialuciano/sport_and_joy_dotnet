@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DinkToPdf.Contracts;
-using DinkToPdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,8 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
 
-// Configuraci�n para la inyeccion de dependencias de DinkToPdf -tema pdf
-builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
 
