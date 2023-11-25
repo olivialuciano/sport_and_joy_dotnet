@@ -51,8 +51,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         //////// POST ////////
         public void CreateRes(Reservation reservation)
         {
-            bool reservationExists = _context.Reservations // Verifica si ya existe una reserva para la misma cancha y fecha
-                .Any(r => r.Field == reservation.Field && r.Date == reservation.Date);
+            bool reservationExists = _context.Reservations
+                .Any(r => r.FieldId == reservation.FieldId && r.Date.Date == reservation.Date.Date);
 
             if (reservationExists)
             {
@@ -63,25 +63,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
                 _context.Reservations.Add(reservation);
                 _context.SaveChanges();
             }
-
         }
 
-        public void CreateResAdmin(Reservation reservation)
-        {
-            bool reservationExists = _context.Reservations // Verifica si ya existe una reserva para la misma cancha y fecha
-                .Any(r => r.Field == reservation.Field && r.Date == reservation.Date);
-
-            if (reservationExists)
-            {
-                throw new InvalidOperationException("Ya existe una reserva ese dia para esa cancha.");
-            }
-            else
-            {
-                _context.Reservations.Add(reservation);
-                _context.SaveChanges();
-            }
-
-        }
 
 
 

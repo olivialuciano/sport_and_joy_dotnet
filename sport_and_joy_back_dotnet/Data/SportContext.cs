@@ -100,25 +100,28 @@ namespace sport_and_joy_back_dotnet.Data
                 FieldId = fie3.Id,
             };
 
+            // lógica de las tablas en la base de datos:
+            // un usuario tiene muchas canchas. No se puede eliminar un usuario que tenga canchas. primero se deben eliminar las canchas de ese usuario.
+            // un usuario tiene muchas reservas. Cuando se elimina un usuario se eliminan todas las reservas asociadas a ese usuario.
+            // una cancha tinee muchas reservas. Cuando se elimina una cancha se eliminan todas las reservas asociadas a aesa cancha.
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Fields)
                 .WithOne(f => f.User)
                 .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Reservations)
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Field>()
                 .HasMany(f => f.Reservations)
                 .WithOne(r => r.Field)
                 .HasForeignKey(r => r.FieldId)
-                .OnDelete(DeleteBehavior.NoAction);
-
+                .OnDelete(DeleteBehavior.Cascade);
 
 
             modelBuilder.Entity<User>().HasData(usr1, usr2, usr3);

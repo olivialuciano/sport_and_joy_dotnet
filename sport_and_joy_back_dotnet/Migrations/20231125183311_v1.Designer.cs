@@ -12,7 +12,7 @@ using sport_and_joy_back_dotnet.Data;
 namespace sport_and_joy_back_dotnet.Migrations
 {
     [DbContext(typeof(SportContext))]
-    [Migration("20231121214615_v1")]
+    [Migration("20231125183311_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -166,7 +166,6 @@ namespace sport_and_joy_back_dotnet.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -189,7 +188,6 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Id = 1,
                             Email = "olilu@gmail.com",
                             FirstName = "Olivia",
-                            Image = "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png",
                             LastName = "Luciano",
                             Password = "oliolioli",
                             Role = 0
@@ -199,7 +197,6 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Id = 2,
                             Email = "visvaik@gmail.com",
                             FirstName = "Vicky",
-                            Image = "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png",
                             LastName = "Svaikauskas",
                             Password = "India123",
                             Role = 1
@@ -209,7 +206,6 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Id = 3,
                             Email = "luans@gmail.com",
                             FirstName = "Luci",
-                            Image = "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png",
                             LastName = "Ansaldi",
                             Password = "lululu",
                             Role = 2
@@ -221,7 +217,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                     b.HasOne("sport_and_joy_back_dotnet.Entities.User", "User")
                         .WithMany("Fields")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -232,13 +228,13 @@ namespace sport_and_joy_back_dotnet.Migrations
                     b.HasOne("sport_and_joy_back_dotnet.Entities.Field", "Field")
                         .WithMany("Reservations")
                         .HasForeignKey("FieldId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("sport_and_joy_back_dotnet.Entities.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Field");

@@ -12,9 +12,7 @@ namespace sport_and_joy_back_dotnet.Entities
 
         public int FieldId { get; set; }
 
-
         [JsonProperty("date")]
-        //[JsonFormat(pattern: "yyyy-MM-dd")]
         [Column(TypeName = "date")]
         public DateTime Date { get; set; }
 

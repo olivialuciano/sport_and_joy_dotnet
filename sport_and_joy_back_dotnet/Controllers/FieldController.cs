@@ -118,7 +118,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         [HttpPut("{id}/edit")] //editar una cancha en específico por id de un usuario logeado. 
         [Authorize(Roles = "OWNER")]
 
-        public IActionResult UpdateField(FieldForCreationDTO dto, int id)
+        public IActionResult UpdateField(FieldDTO dto, int id)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         [HttpPut("{id}/edit-admin")] //editar una cancha en específico por id de un usuario que el admin pasa.
         [Authorize(Roles = "ADMIN")]
 
-        public IActionResult UpdateFieldAdmin(FieldForCreationDTO dto, int IdUser, int id)
+        public IActionResult UpdateFieldAdmin(FieldDTO dto, int IdUser, int id)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         //}
 
         [HttpDelete]
-        [Route("{Id}/delete-admin")] //eliminar una cancha en específico.
+        [Route("{id}/delete-admin")] //eliminar una cancha en específico.
         [Authorize(Roles = "ADMIN")]
 
         public IActionResult DeleteFieldByIdAdmin(int id)

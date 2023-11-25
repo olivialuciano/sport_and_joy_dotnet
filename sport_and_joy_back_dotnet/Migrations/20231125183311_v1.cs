@@ -19,7 +19,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -53,8 +53,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                         name: "FK_Fields_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -74,12 +73,14 @@ namespace sport_and_joy_back_dotnet.Migrations
                         name: "FK_Reservations_Fields_FieldId",
                         column: x => x.FieldId,
                         principalTable: "Fields",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reservations_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -87,9 +88,9 @@ namespace sport_and_joy_back_dotnet.Migrations
                 columns: new[] { "Id", "Email", "FirstName", "Image", "LastName", "Password", "Role" },
                 values: new object[,]
                 {
-                    { 1, "olilu@gmail.com", "Olivia", "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png", "Luciano", "oliolioli", 0 },
-                    { 2, "visvaik@gmail.com", "Vicky", "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png", "Svaikauskas", "India123", 1 },
-                    { 3, "luans@gmail.com", "Luci", "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png", "Ansaldi", "lululu", 2 }
+                    { 1, "olilu@gmail.com", "Olivia", null, "Luciano", "oliolioli", 0 },
+                    { 2, "visvaik@gmail.com", "Vicky", null, "Svaikauskas", "India123", 1 },
+                    { 3, "luans@gmail.com", "Luci", null, "Ansaldi", "lululu", 2 }
                 });
 
             migrationBuilder.InsertData(

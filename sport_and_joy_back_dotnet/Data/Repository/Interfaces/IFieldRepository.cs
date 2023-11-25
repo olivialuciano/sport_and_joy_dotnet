@@ -19,8 +19,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
 
         //////// PUT ////////
-        public void UpdateFie(FieldForCreationDTO dto, int userId, int id);
-        public void UpdateFieAdmin(FieldForCreationDTO dto, int IdUser, int id);
+        public void UpdateFie(FieldDTO dto, int userId, int id);
+        public void UpdateFieAdmin(FieldDTO dto, int IdUser, int id);
 
 
         //////// DELETE ////////

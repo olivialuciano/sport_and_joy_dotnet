@@ -145,7 +145,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                     UserId = IdUser, //id proporcionado x el admin
                     FieldId = dto.FieldId,
                 };
-                _reservationRepository.CreateResAdmin(reservation);
+                _reservationRepository.CreateRes(reservation);
                 return Ok();
             }
             catch(Exception ex)
@@ -159,7 +159,7 @@ namespace sport_and_joy_back_dotnet.Controllers
 
         //////// DELETE ////////
 
-        [HttpDelete("{Id}/delete")] //eliminar una reserva en específico por id de usuario.
+        [HttpDelete("{id}/delete")] //eliminar una reserva en específico por id de usuario.
         [Authorize(Roles = "PLAYER")]
 
         public IActionResult DeleteReservationById(int id)
@@ -177,7 +177,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
 
-        [HttpDelete("{Id}/delete-admin")] //eliminar una reserva en específico admin proporciona id de usuario.
+        [HttpDelete("{id}/delete-admin")] //eliminar una reserva en específico admin proporciona id de usuario.
         [Authorize(Roles = "ADMIN")]// no funciona
 
         public IActionResult DeleteReservationByIdAdmin(int id)

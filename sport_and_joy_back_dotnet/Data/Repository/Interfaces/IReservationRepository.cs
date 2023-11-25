@@ -13,10 +13,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
         public List<Reservation> GetAllResOfFieldsOwner(int userId); //para owner
 
 
-
         //////// POST ////////
         public void CreateRes(Reservation reservation);
-        public void CreateResAdmin(Reservation reservation);
 
 
         //////// DELETE ////////

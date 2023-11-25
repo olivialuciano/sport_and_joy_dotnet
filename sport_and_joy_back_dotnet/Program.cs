@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddControllers();
 
-// Configuraci�n para la inyecci�n de dependencias de DinkToPdf -tema pdf
+// Configuraci�n para la inyeccion de dependencias de DinkToPdf -tema pdf
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
@@ -33,7 +33,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Ac� pegar el token generado al loguearse."
+        Description = "Token:"
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement

@@ -43,6 +43,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         //    Field field = new Field()
         //    {
         //        UserId = userId,
+        //        Name = dto.Name,
+        //        Image = dto.Image,
         //        Location = dto.Location,
         //        Description = dto.Description,
         //        LockerRoom = dto.LockerRoom,
@@ -58,6 +60,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             Field field = new Field()
             {
                 UserId = IdUser,
+                Name = dto.Name,
+                Image = dto.Image,
                 Location = dto.Location,
                 Description = dto.Description,
                 LockerRoom = dto.LockerRoom,
@@ -71,7 +75,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
 
         //////// PUT ////////
-        public void UpdateFie(FieldForCreationDTO dto, int userId, int id)
+        public void UpdateFie(FieldDTO dto, int userId, int id)
         {
             var field = _context.Fields.FirstOrDefault(f => f.UserId == userId && f.Id == id);
 
@@ -79,6 +83,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             {
                 field.UserId = userId;
                 field.Id = id;
+                field.Name = dto.Name;
+                field.Image = dto.Image;
                 field.Location = dto.Location;
                 field.Description = dto.Description;
                 field.LockerRoom = dto.LockerRoom;
@@ -89,7 +95,7 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             }
         }
 
-        public void UpdateFieAdmin(FieldForCreationDTO dto, int IdUser, int id)
+        public void UpdateFieAdmin(FieldDTO dto, int IdUser, int id)
         {
             var field = _context.Fields.FirstOrDefault(f => f.UserId == IdUser && f.Id == id);
 
@@ -97,6 +103,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
             {
                 field.UserId = IdUser;
                 field.Id = id;
+                field.Name = dto.Name;
+                field.Image = dto.Image;
                 field.Location = dto.Location;
                 field.Description = dto.Description;
                 field.LockerRoom = dto.LockerRoom;
