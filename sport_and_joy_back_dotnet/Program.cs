@@ -109,12 +109,22 @@ builder.Services.AddScoped<IFieldRepository, FieldRepository>();
 //#endregion
 
 //  CORS sino nunca iba a andar reina -para react 3000
-builder.Services.AddCors(options => options.AddPolicy(name: "SportAndJoy",
-    policy => {
-        policy.WithOrigins("http://localhost:3000")
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    }));
+//builder.Services.AddCors(options => options.AddPolicy(name: "SportAndJoy",
+//    policy => {
+//        policy.WithOrigins("http://localhost:3000")
+//               .AllowAnyMethod()
+//               .AllowAnyHeader();
+//    }));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        });
+});
+
 
 //esto despues del cors!
 var app = builder.Build();
@@ -127,7 +137,10 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("SportAndJoy");
+//app.UseCors("SportAndJoy");
+
+app.UseCors("AllowAll");
+
 
 app.UseHttpsRedirection();
 
