@@ -81,7 +81,7 @@ namespace sport_and_joy_back_dotnet.Controllers
             claimsForToken.Add(new Claim("sub", user.Id.ToString())); //esto lo usamos para traer las cosas que pertenecen a un user en particular.
             claimsForToken.Add(new Claim("given_name", user.FirstName));
             claimsForToken.Add(new Claim("family_name", user.LastName));
-            claimsForToken.Add(new Claim(ClaimTypes.Role, user.Role.ToString())); //agregamos el rol como claim para agarrarlo luegoen le front.
+            claimsForToken.Add(new Claim("role", user.Role.ToString())); //agregamos el rol como claim para agarrarlo luegoen le front.
 
             //ACÁ SE CREA EL TOKEN
             var jwtSecurityToken = new JwtSecurityToken(
