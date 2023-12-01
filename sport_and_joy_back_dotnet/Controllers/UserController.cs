@@ -45,7 +45,7 @@ namespace sport_and_joy_back_dotnet.Controllers
         }
 
         [HttpGet("get/{Id}")] //trae un usuario en especifico x id
-        [Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN,PLAYER,OWNER")]
         public IActionResult GetOneById(int Id)
         {
             try
