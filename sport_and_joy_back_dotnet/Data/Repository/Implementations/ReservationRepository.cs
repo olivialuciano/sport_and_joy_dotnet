@@ -19,31 +19,124 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
         }
 
 
-        //////// GET ////////
+        //////// GET //////// además de reserva, traen algunas propiedades que necesitamos de field y user
+        
         public List<Reservation> GetAllResByUser(int userId)
         {
-            return _context.Reservations.Where(r => r.UserId == userId).ToList();
+            return _context.Reservations
+                .Where(r => r.UserId == userId)
+                .Select(r => new Reservation
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    FieldId = r.FieldId,
+
+                    Field = new Field
+                    {
+                        Name = r.Field.Name,
+                        Location = r.Field.Location,
+                        Price = r.Field.Price,
+                        Sport = r.Field.Sport
+                    },
+
+                    User = new User
+                    {
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName,
+                        Email = r.User.Email
+                    }
+                })
+                .ToList();
         }
 
         public List<Reservation> GetAllRes()
         {
-            return _context.Reservations.ToList();
-        }
+            return _context.Reservations
+                .Select(r => new Reservation
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    FieldId = r.FieldId,
 
-        public Reservation GetResById(int id)
-        {
-            return _context.Reservations.FirstOrDefault(r => r.Id == id);
-        }
+                    Field = new Field
+                    {
+                        Name = r.Field.Name,
+                        Location = r.Field.Location,
+                        Price = r.Field.Price,
+                        Sport = r.Field.Sport
+                    },
 
-        public List<Reservation> GetAllResOfFieldsOwner(int userId) //para owner
-        {
-            var reservations = _context.Fields
-                .Where(field => field.UserId == userId) //canchas del usuario owner
-                .SelectMany(field => field.Reservations) //todas las reservas asociadas a esas canchas
+                    User = new User
+                    {
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName,
+                        Email = r.User.Email
+                    }
+                })
                 .ToList();
-
-            return reservations;
         }
+
+        public Reservation GetResById(int id) //solo está en verde porque puede ser que no haya en la db una reserva de id x. entonces puede retornar null.
+        {
+            return _context.Reservations
+                .Where(r => r.Id == id)
+                .Select(r => new Reservation
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    FieldId = r.FieldId,
+
+                    Field = new Field
+                    {
+                        Name = r.Field.Name,
+                        Location = r.Field.Location,
+                        Price = r.Field.Price,
+                        Sport = r.Field.Sport
+                    },
+
+                    User = new User
+                    {
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName,
+                        Email = r.User.Email
+                    }
+                })
+                .FirstOrDefault();
+        }
+
+        public List<Reservation> GetAllResOfFieldsOwner(int userId)
+        {
+            return _context.Fields
+                .Where(field => field.UserId == userId)
+                .SelectMany(field => field.Reservations)
+                .Select(r => new Reservation
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    UserId = r.UserId,
+                    FieldId = r.FieldId,
+
+                    Field = new Field
+                    {
+                        Name = r.Field.Name,
+                        Location = r.Field.Location,
+                        Price = r.Field.Price,
+                        Sport = r.Field.Sport
+                    },
+
+                    User = new User
+                    {
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName,
+                        Email = r.User.Email
+                    }
+                })
+                .ToList();
+        }
+
 
 
 
