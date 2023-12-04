@@ -53,6 +53,7 @@ namespace sport_and_joy_back_dotnet.Data
                 Description = "Cancha de f5 para todos.",
                 LockerRoom = false,
                 Bar = true,
+                Price = 2000,
                 Sport = Esport.FOOTALL,
                 UserId = usr2.Id
             };
@@ -64,6 +65,7 @@ namespace sport_and_joy_back_dotnet.Data
                 Description = "Cancha de voley para todos.",
                 LockerRoom = true,
                 Bar = false,
+                Price = 2000,
                 Sport = Esport.VOLLEY,
                 UserId = usr2.Id
             };
@@ -75,6 +77,7 @@ namespace sport_and_joy_back_dotnet.Data
                 Description = "Cancha de tenis para todos.",
                 LockerRoom = true,
                 Bar = true,
+                Price = 2000,
                 Sport = Esport.TENNIS,
                 UserId = usr2.Id
             };

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace sport_and_joy_back_dotnet.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class v2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,6 +43,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LockerRoom = table.Column<bool>(type: "bit", nullable: true),
                     Bar = table.Column<bool>(type: "bit", nullable: true),
+                    Price = table.Column<float>(type: "real", nullable: true),
                     Sport = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -95,12 +96,12 @@ namespace sport_and_joy_back_dotnet.Migrations
 
             migrationBuilder.InsertData(
                 table: "Fields",
-                columns: new[] { "Id", "Bar", "Description", "Image", "Location", "LockerRoom", "Name", "Sport", "UserId" },
+                columns: new[] { "Id", "Bar", "Description", "Image", "Location", "LockerRoom", "Name", "Price", "Sport", "UserId" },
                 values: new object[,]
                 {
-                    { 1, true, "Cancha de f5 para todos.", null, "Paraguay 1950", false, "futbol lindo", 0, 2 },
-                    { 2, false, "Cancha de voley para todos.", null, "Corrientes 1950", true, "voley lindo", 1, 2 },
-                    { 3, true, "Cancha de tenis para todos.", null, "Entre Rios 1950", true, "tenis lindo", 2, 2 }
+                    { 1, true, "Cancha de f5 para todos.", null, "Paraguay 1950", false, "futbol lindo", 2000f, 0, 2 },
+                    { 2, false, "Cancha de voley para todos.", null, "Corrientes 1950", true, "voley lindo", 2000f, 1, 2 },
+                    { 3, true, "Cancha de tenis para todos.", null, "Entre Rios 1950", true, "tenis lindo", 2000f, 2, 2 }
                 });
 
             migrationBuilder.InsertData(

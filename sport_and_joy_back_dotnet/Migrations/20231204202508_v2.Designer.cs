@@ -12,8 +12,8 @@ using sport_and_joy_back_dotnet.Data;
 namespace sport_and_joy_back_dotnet.Migrations
 {
     [DbContext(typeof(SportContext))]
-    [Migration("20231125183311_v1")]
-    partial class v1
+    [Migration("20231204202508_v2")]
+    partial class v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,9 @@ namespace sport_and_joy_back_dotnet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
@@ -73,6 +76,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Paraguay 1950",
                             LockerRoom = false,
                             Name = "futbol lindo",
+                            Price = 2000f,
                             Sport = 0,
                             UserId = 2
                         },
@@ -84,6 +88,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Corrientes 1950",
                             LockerRoom = true,
                             Name = "voley lindo",
+                            Price = 2000f,
                             Sport = 1,
                             UserId = 2
                         },
@@ -95,6 +100,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Entre Rios 1950",
                             LockerRoom = true,
                             Name = "tenis lindo",
+                            Price = 2000f,
                             Sport = 2,
                             UserId = 2
                         });

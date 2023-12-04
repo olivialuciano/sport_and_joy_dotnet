@@ -49,6 +49,9 @@ namespace sport_and_joy_back_dotnet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("Sport")
                         .HasColumnType("int");
 
@@ -70,6 +73,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Paraguay 1950",
                             LockerRoom = false,
                             Name = "futbol lindo",
+                            Price = 2000f,
                             Sport = 0,
                             UserId = 2
                         },
@@ -81,6 +85,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Corrientes 1950",
                             LockerRoom = true,
                             Name = "voley lindo",
+                            Price = 2000f,
                             Sport = 1,
                             UserId = 2
                         },
@@ -92,6 +97,7 @@ namespace sport_and_joy_back_dotnet.Migrations
                             Location = "Entre Rios 1950",
                             LockerRoom = true,
                             Name = "tenis lindo",
+                            Price = 2000f,
                             Sport = 2,
                             UserId = 2
                         });
