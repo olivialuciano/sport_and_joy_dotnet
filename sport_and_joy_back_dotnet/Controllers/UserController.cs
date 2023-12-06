@@ -174,7 +174,23 @@ namespace sport_and_joy_back_dotnet.Controllers
         {
             try
             {
-                int userSesionId = Int32.Parse(HttpContext.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                var userSesionIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+                var userRoleClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+                if (userSesionIdClaim == null || userRoleClaim == null)
+                {
+                    return BadRequest("No se encontraron las claims necesarias en el token.");
+                }
+
+                int userSesionId = Int32.Parse(userSesionIdClaim.Value);
+                string userRole = userRoleClaim.Value;
+
+                // convertir el rol de string a un enum
+                if (!Enum.TryParse<Erole>(userRole, out var userRoleEnum))
+                {
+                    return BadRequest("Rol no reconocido");
+                }
+
                 var user = new User()
                 {
                     Id = idUserLoggedIn,
@@ -182,6 +198,7 @@ namespace sport_and_joy_back_dotnet.Controllers
                     FirstName = dto.FirstName,
                     LastName = dto.LastName,
                     Email = dto.Email,
+                    Role = userRoleEnum,
                 };
                 if (idUserLoggedIn != userSesionId)
                 {
