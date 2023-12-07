@@ -86,18 +86,41 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
         /////// REPORTS //////
 
-        public async Task<List<User>> PlayersWithReservations()
+        public async Task<List<ReportUserWithReservationsDTO>> PlayersWithReservations()
         {
-            return await _context.Users
+            var users = await _context.Users
+                .Include(u => u.Reservations)
                 .Where(u => u.Role == Erole.PLAYER && u.Reservations.Any())
+                .Select(u => new ReportUserWithReservationsDTO
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    ReservationsCount = u.Reservations.Count()
+                })
                 .ToListAsync();
+
+            return users;
         }
 
-        public async Task<List<User>> OwnersWithFields()
+        public async Task<List<ReportUserWithFieldsDTO>> OwnersWithFields()
         {
-            return await _context.Users
+            var users = await _context.Users
+                .Include(u => u.Fields)
                 .Where(u => u.Role == Erole.OWNER && u.Fields.Any())
+                .Select(u => new ReportUserWithFieldsDTO
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    FieldsCount = u.Fields.Count()
+                })
                 .ToListAsync();
+
+            return users;
+
         }
 
 

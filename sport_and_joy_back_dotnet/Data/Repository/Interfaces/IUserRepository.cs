@@ -26,9 +26,8 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Interfaces
 
 
         /////// REPORTS //////
-        Task<List<User>> PlayersWithReservations();
-        Task<List<User>> OwnersWithFields();
-
+        Task<List<ReportUserWithFieldsDTO>> OwnersWithFields();
+        Task<List<ReportUserWithReservationsDTO>> PlayersWithReservations();
 
     }
 }

@@ -182,12 +182,27 @@ namespace sport_and_joy_back_dotnet.Data.Repository.Implementations
 
 
         /////// REPORTS //////
-        public async Task<List<Reservation>> ReservationsInMonth(int month)
+        public async Task<List<ReportReservationsDTO>> ReservationsInMonth(int month, int year)
         {
             return await _context.Reservations
-                .Where(r => r.Date.Month == month)
+                .Include(r => r.User)
+                .Include(r => r.Field)
+                .Where(r => r.Date.Month == month && r.Date.Year == year)
+                .Select(r => new ReportReservationsDTO
+                {
+                    Id = r.Id,
+                    Date = r.Date,
+                    FieldId = r.FieldId,
+                    UserId = r.UserId,
+                    UserFirstName = r.User.FirstName,
+                    UserLastName = r.User.LastName,
+                    UserEmail = r.User.Email,
+                    FieldName = r.Field.Name,
+                    FieldPrice = (float)r.Field.Price
+                })
                 .ToListAsync();
         }
+
 
     }
 }
